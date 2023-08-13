@@ -5,9 +5,7 @@ on:
       - master
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
     - name: All things angular
@@ -18,6 +16,6 @@ jobs:
         base_href: /bgg-board-game-picker/   # make sure this corresponds to https://<your_username>.github.io/<base_href>/
         deploy_branch: gh-pages # The branch the action should deploy to.
         angular_dist_build_folder: dist/bgg-board-game-picker # The folder where your project is supposed to be after running ng build by the action.
-        angular_project_dir: "./bgg-board-game-picker
+        angular_project_dir: "./bgg-board-game-picker"
 permissions:
   contents: write # Allow write permission to GITHUB_TOKEN to commit to deploy branch.
