@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'bgg-board-game-picker';
+  title = 'Board Game Geek Game Picker';
 }
