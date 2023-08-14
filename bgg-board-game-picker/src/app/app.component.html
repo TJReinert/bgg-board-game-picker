@@ -1,14 +1,38 @@
 <!-- Toolbar -->
 <mat-toolbar color="primary">
-  <img
-  width="40"
-  alt="Angular Logo"
-  src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg=="
-/>
+  <img width="40" alt="Angular Logo"
+    src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==" />
   <span>Board Game Picker</span>
 </mat-toolbar>
+<div>
+  <mat-form-field>
+    <mat-label>Username</mat-label>
+    <input matInput [formControl]="username" required>
+    <mat-error *ngIf="username.invalid">{{getErrorMessage()}}</mat-error>
+  </mat-form-field>
 
-
-<div class="content" role="main">
-
+  <button type="button" color="primary" mat-raised-button (click)="get_games()" [disabled]=username.invalid>
+    Search
+  </button>
+</div>
+<div *ngIf="random_game">
+  Random game: <b>{{random_game.name}}</b>
+</div>
+<!-- loop over board_games -->
+<div *ngIf="board_games?.items">
+  <mat-expansion-panel hideToggle>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        All Games
+      </mat-panel-title>
+      <mat-panel-description>
+        Expand to view all
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <ul>
+      <li *ngFor="let game of board_games?.items">
+        {{ game.name }}
+      </li>
+    </ul>
+  </mat-expansion-panel>
 </div>

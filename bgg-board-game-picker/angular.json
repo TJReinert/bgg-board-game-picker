@@ -16,6 +16,11 @@
             "outputPath": "dist/bgg-board-game-picker",
             "index": "src/index.html",
             "main": "src/main.ts",
+            "allowedCommonJsDependencies": [
+              "fast-xml-parser",
+              "jackson-js",
+              "isomorphic-unfetch"
+           ],
             "polyfills": [
               "zone.js"
             ],

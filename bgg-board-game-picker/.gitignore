@@ -42,4 +42,4 @@ testem.log
 Thumbs.db
 
 # Test Data
-test-data/*
+src/assets/test-data/*
