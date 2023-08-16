@@ -28,7 +28,9 @@ export class AppComponent {
       .select(UserBoardGameCollectionState)
       .subscribe((result) => {
         this.board_games = result
-        this.random_game = result.items[Math.floor(Math.random() * result.items.length)];
+        if (result?.items) {
+          this.random_game = result.items[Math.floor(Math.random() * result.items.length)];
+        }
       });
   }
 
