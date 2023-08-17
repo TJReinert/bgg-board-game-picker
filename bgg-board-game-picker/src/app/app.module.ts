@@ -10,7 +10,8 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { UserBoardGameCollectionState } from './board-game/board-game.states';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {MatSliderModule} from '@angular/material/slider';
 
 @NgModule({
   declarations: [
@@ -24,8 +25,10 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatInputModule,
     MatExpansionModule,
     MatToolbarModule,
+    MatSliderModule,
     ReactiveFormsModule,
     MatFormFieldModule,
+    FormsModule,
     NgxsModule.forRoot([
       UserBoardGameCollectionState
     ])

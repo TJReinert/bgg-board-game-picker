@@ -16,6 +16,19 @@
   <button type="button" color="primary" mat-raised-button (click)="randomize()" [disabled]="!random_games">
     Randomize
   </button>
+  <div class="example-label-container">
+    <label id="example-name-label" class="example-name-label">Number of Players</label>
+    <label class="example-value-label">{{slider.value}}</label>
+  </div>
+  <mat-slider
+      class="example-margin"
+      [max]="10"
+      [min]="1"
+      [step]="1"
+      [discrete]="true"
+      [showTickMarks]="true">
+    <input matSliderThumb [(ngModel)]="number_of_players" #slider>
+  </mat-slider>
 </div>
 <div *ngIf="get_current_game_collection()?.items">
   <div *ngFor="let random_game of random_games">

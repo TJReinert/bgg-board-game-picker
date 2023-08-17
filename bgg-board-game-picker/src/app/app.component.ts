@@ -26,6 +26,7 @@ export class AppComponent {
     Validators.minLength(1),
   ]);
   current_username = 'asmithnp12';
+  number_of_players = 2;
   all_board_games: BoardGameCollections;
   random_games: BggCollectionItemDto[];
 
@@ -36,11 +37,6 @@ export class AppComponent {
     });
   }
 
-  get_current_game_collection() {
-    return this.all_board_games[this.current_username];
-  }
-
-
   get_games() {
     if (this.current_username) {
       this.store.dispatch(
@@ -49,9 +45,16 @@ export class AppComponent {
     }
   }
 
-  _get_random_games(num: number): BggCollectionItemDto[] {
-    return shuffle(this.get_current_game_collection().items).slice(0, num);
+  get_current_game_collection() {
+    return this.all_board_games[this.current_username];
   }
+
+  get_current_games_for_search(number_of_players:number) {
+    return this.get_current_game_collection().items
+               .filter(game => number_of_players ? game?.stats?.minplayers <= number_of_players : true)
+               .filter(game => number_of_players ? game?.stats?.maxplayers >= number_of_players : true)
+  }
+
 
   randomize() {
     this.random_games = this._get_random_games(this.number_of_random_games);
@@ -66,5 +69,9 @@ export class AppComponent {
     }
 
     return 'Unknown Error';
+  }
+
+  _get_random_games(num: number): BggCollectionItemDto[] {
+    return shuffle(this.get_current_games_for_search(this.number_of_players)).slice(0, num);
   }
 }
