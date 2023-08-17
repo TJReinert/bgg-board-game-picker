@@ -4,22 +4,27 @@
     src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==" />
   <span>Board Game Picker</span>
 </mat-toolbar>
-<div>
+<div class="bgg-search-inputs">
   <mat-form-field>
     <mat-label>Username</mat-label>
-    <input matInput [formControl]="username" required>
-    <mat-error *ngIf="username.invalid">{{getErrorMessage()}}</mat-error>
+    <input matInput [(ngModel)]="current_username" [formControl]="username_control" required (keyup.enter)=get_games()>
+    <mat-error *ngIf="username_control.invalid">{{getErrorMessage()}}</mat-error>
   </mat-form-field>
-
-  <button type="button" color="primary" mat-raised-button (click)="get_games()" [disabled]=username.invalid>
+  <button type="button" color="primary" mat-raised-button (click)="get_games()" [disabled]=username_control.invalid>
     Search
   </button>
+  <button type="button" color="primary" mat-raised-button (click)="randomize()" [disabled]="!random_games">
+    Randomize
+  </button>
 </div>
-<div *ngIf="random_game">
-  Random game: <b>{{random_game.name}}</b>
+<div *ngIf="get_current_game_collection()?.items">
+  <div *ngFor="let random_game of random_games">
+    <img src={{random_game.thumbnail}}>
+    <span>Random game: <b>{{random_game.name}}</b> </span>
+  </div>
 </div>
 <!-- loop over board_games -->
-<div *ngIf="board_games?.items">
+<div *ngIf="get_current_game_collection()?.items">
   <mat-expansion-panel hideToggle>
     <mat-expansion-panel-header>
       <mat-panel-title>
@@ -30,7 +35,7 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
     <ul>
-      <li *ngFor="let game of board_games?.items">
+      <li *ngFor="let game of get_current_game_collection()?.items">
         {{ game.name }}
       </li>
     </ul>

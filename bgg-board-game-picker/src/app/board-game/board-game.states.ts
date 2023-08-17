@@ -5,7 +5,11 @@ import { BoardGameService } from './board-game.service';
 import { GetUserBoardGameCollection } from './board-game.actions';
 const BOARD_GAME_COLLECTION_TOKEN = new StateToken<BggCollectionDto>('UserBoardGameCollection');
 
-@State<BggCollectionDto>({
+export interface BoardGameCollections {
+  [key: string]: BggCollectionDto;
+}
+
+@State<BoardGameCollections>({
   name: BOARD_GAME_COLLECTION_TOKEN
 })
 @Injectable()
@@ -13,11 +17,13 @@ export class UserBoardGameCollectionState {
   constructor(private boardGameService: BoardGameService) {}
 
   @Action(GetUserBoardGameCollection)
-  getUserBoardGameCollection(ctx: StateContext<BggCollectionDto>,
-    action: GetUserBoardGameCollection) {
-    // const state = ctx.getState();
-    console.log(ctx)
-    this.boardGameService.get_games(action.user_id)
-                         .then(result => ctx.patchState(result[0]), error => console.log(error) )
+  getUserBoardGameCollection(ctx: StateContext<BoardGameCollections>, action: GetUserBoardGameCollection) {
+    const all_user_collections = ctx.getState()
+    const user_id = action.user_id
+    if (!all_user_collections[user_id]) {
+      this.boardGameService.get_games(user_id)
+      .then(result => ctx.patchState({ [user_id] : result[0] }),
+            error => console.log(error))
+    }
   }
 }

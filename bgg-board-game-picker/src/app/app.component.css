@@ -1,0 +1,9 @@
+.bgg-search-inputs {
+  display: flex;
+  margin-top: 1vh;
+}
+
+.bgg-search-inputs > * {
+  flex-wrap: wrap;
+  margin-right: 1vh;
+}
