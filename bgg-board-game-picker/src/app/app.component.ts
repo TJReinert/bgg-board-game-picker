@@ -10,7 +10,9 @@ import {
 } from './board-game/board-game.states';
 import { FormControl, Validators } from '@angular/forms';
 import { BggCollectionItemDto } from 'boardgamegeekclient/dist/esm/dto/concrete/subdto/BggCollectionItemDto';
-import { shuffle } from 'lodash';
+import { range, shuffle } from 'lodash';
+import { faHourglass, faPlay, faUserLarge } from '@fortawesome/free-solid-svg-icons';
+import { unescape } from 'lodash';
 
 @Component({
   selector: 'app-root',
@@ -26,9 +28,14 @@ export class AppComponent {
     Validators.minLength(1),
   ]);
   current_username = 'asmithnp12';
+  number_of_players_options = range(1, 10)
   number_of_players = 2;
   all_board_games: BoardGameCollections;
   random_games: BggCollectionItemDto[];
+
+  time = faHourglass;
+  players = faUserLarge;
+  plays = faPlay;
 
   constructor(private store: Store) {
     store.select(UserBoardGameCollectionState).subscribe((result) => {
@@ -69,6 +76,44 @@ export class AppComponent {
     }
 
     return 'Unknown Error';
+  }
+
+  get_game_title(game_name: String) {
+    return unescape(game_name.replaceAll("&#039;", "&#39;"))
+  }
+
+  get_time_text(game: BggCollectionItemDto) {
+    var min = game?.stats?.minplaytime
+    var max = game?.stats?.maxplaytime
+    if (!min && !max) {
+      return `Unknown minutes`
+    }
+    if (min == max) {
+      return `${min} minutes`
+    }
+    return `${min}-${max} minutes`
+  }
+
+  get_playcount_text(plays: Number) {
+    if (plays === 1) {
+      var suffix = 'play'
+    } else {
+      var suffix = 'plays'
+    }
+    return `${plays} ${suffix}`
+  }
+
+  get_players_text(game: BggCollectionItemDto) {
+    var min = game?.stats?.minplayers
+    var max = game?.stats?.maxplayers
+
+    if (min === max) {
+      if (min === 1) {
+        return `1 player`
+      }
+      return `${min} players`
+    }
+    return `${min} - ${max} players`
   }
 
   _get_random_games(num: number): BggCollectionItemDto[] {

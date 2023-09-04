@@ -11,11 +11,16 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { UserBoardGameCollectionState } from './board-game/board-game.states';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {MatSelectModule} from '@angular/material/select';
+import {MatIconModule} from '@angular/material/icon';
 import {MatSliderModule} from '@angular/material/slider';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import {MatCardModule} from '@angular/material/card';
+
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
@@ -25,13 +30,17 @@ import {MatSliderModule} from '@angular/material/slider';
     MatInputModule,
     MatExpansionModule,
     MatToolbarModule,
+    MatSelectModule,
+    MatIconModule,
+    MatCardModule,
     MatSliderModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     FormsModule,
     NgxsModule.forRoot([
       UserBoardGameCollectionState
-    ])
+    ]),
+    FontAwesomeModule
   ],
   providers: [],
   bootstrap: [AppComponent]

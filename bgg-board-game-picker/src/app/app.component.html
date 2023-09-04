@@ -4,53 +4,71 @@
     src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==" />
   <span>Board Game Picker</span>
 </mat-toolbar>
-<div class="bgg-search-inputs">
-  <mat-form-field>
-    <mat-label>Username</mat-label>
-    <input matInput [(ngModel)]="current_username" [formControl]="username_control" required (keyup.enter)=get_games()>
-    <mat-error *ngIf="username_control.invalid">{{getErrorMessage()}}</mat-error>
-  </mat-form-field>
-  <button type="button" color="primary" mat-raised-button (click)="get_games()" [disabled]=username_control.invalid>
-    Search
-  </button>
-  <button type="button" color="primary" mat-raised-button (click)="randomize()" [disabled]="!random_games">
-    Randomize
-  </button>
-  <div class="example-label-container">
-    <label id="example-name-label" class="example-name-label">Number of Players</label>
-    <label class="example-value-label">{{slider.value}}</label>
+<div class="surface-card p-4 shadow-2 border-round">
+  <div class="app-content">
+    <div class="bgg-search-inputs">
+      <mat-form-field class="main-input">
+        <mat-label>Username</mat-label>
+        <input matInput [(ngModel)]="current_username" [formControl]="username_control" required
+          (keyup.enter)=get_games()>
+        <mat-error *ngIf="username_control.invalid">{{getErrorMessage()}}</mat-error>
+      </mat-form-field>
+      <mat-form-field class="main-input">
+        <mat-label>Number of Players</mat-label>
+        <mat-select [(value)]="number_of_players" (valueChange)="get_games()">
+          <mat-option *ngFor="let option of number_of_players_options" [value]="option">
+            {{option}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button type="button" color="primary" mat-raised-button (click)="get_games()" [disabled]=username_control.invalid>
+        Search
+      </button>
+    </div>
+    <div *ngIf="get_current_game_collection()?.items" class="game-gallery flex justify-content-around flex-row flex-wrap gap-4">
+      <mat-card *ngFor="let random_game of random_games" class="surface-card p-4 shadow-2 border-round justify-content-center
+      responsive min-width
+      border-round-sm
+      fadein animation-duration-1000" >
+        <mat-card-header class="p-0 flex justify-content-center align-items-center">
+          <mat-card-title>{{get_game_title(random_game.name)}}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="p-0 pt-1">
+          <div>
+            <fa-icon [icon]="players"></fa-icon>
+            {{get_players_text(random_game)}}
+          </div>
+          <div>
+            <fa-icon [icon]="time"></fa-icon>
+            {{get_time_text(random_game)}}
+          </div>
+          <div>
+            <fa-icon [icon]="plays"></fa-icon>
+            {{get_playcount_text(random_game.numplays)}}
+          </div>
+          <div class="flex justify-content-center mt-auto pt-2">
+            <img mat-card-image src={{random_game.thumbnail}}>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <!-- loop over board_games -->
+    <div *ngIf="get_current_game_collection()?.items">
+      <mat-expansion-panel hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            All Games
+          </mat-panel-title>
+          <mat-panel-description>
+            Expand to view all
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <ul>
+          <li *ngFor="let game of get_current_game_collection()?.items">
+            {{ game.name }}
+          </li>
+        </ul>
+      </mat-expansion-panel>
+    </div>
   </div>
-  <mat-slider
-      class="example-margin"
-      [max]="10"
-      [min]="1"
-      [step]="1"
-      [discrete]="true"
-      [showTickMarks]="true">
-    <input matSliderThumb [(ngModel)]="number_of_players" #slider>
-  </mat-slider>
-</div>
-<div *ngIf="get_current_game_collection()?.items">
-  <div *ngFor="let random_game of random_games">
-    <img src={{random_game.thumbnail}}>
-    <span>Random game: <b>{{random_game.name}}</b> </span>
-  </div>
-</div>
-<!-- loop over board_games -->
-<div *ngIf="get_current_game_collection()?.items">
-  <mat-expansion-panel hideToggle>
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        All Games
-      </mat-panel-title>
-      <mat-panel-description>
-        Expand to view all
-      </mat-panel-description>
-    </mat-expansion-panel-header>
-    <ul>
-      <li *ngFor="let game of get_current_game_collection()?.items">
-        {{ game.name }}
-      </li>
-    </ul>
-  </mat-expansion-panel>
 </div>

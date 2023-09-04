@@ -24,6 +24,9 @@ export class UserBoardGameCollectionState {
       this.boardGameService.get_games(user_id)
       .then(result => ctx.patchState({ [user_id] : result[0] }),
             error => console.log(error))
+    } else {
+      // trigger downstream so things still happen
+      ctx.patchState({ [user_id] : all_user_collections[user_id] })
     }
   }
 }

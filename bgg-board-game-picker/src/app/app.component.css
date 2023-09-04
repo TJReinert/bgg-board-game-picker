@@ -1,9 +1,27 @@
 .bgg-search-inputs {
   display: flex;
-  margin-top: 1vh;
+  margin: 1vh;
+  flex-direction: column;
 }
 
 .bgg-search-inputs > * {
-  flex-wrap: wrap;
+  flex-wrap: column;
   margin-right: 1vh;
+}
+
+.bgg-search-inputs > mat-form-field {
+  max-width: 60vw;
+}
+
+.app-content {
+  margin: 1vh
+}
+
+.showcase {
+  display: flex;
+  flex-direction: row;
+}
+
+.game-gallery {
+  margin: 1vh
 }
