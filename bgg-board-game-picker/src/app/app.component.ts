@@ -56,8 +56,11 @@ export class AppComponent {
     return this.all_board_games[this.current_username];
   }
 
-  get_current_games_for_search(number_of_players:number) {
-    return this.get_current_game_collection().items
+  get_current_games_for_search(number_of_players?: number) {
+    if (!number_of_players) {
+      number_of_players = this.number_of_players
+    }
+    return this.get_current_game_collection()?.items
                .filter(game => number_of_players ? game?.stats?.minplayers <= number_of_players : true)
                .filter(game => number_of_players ? game?.stats?.maxplayers >= number_of_players : true)
   }

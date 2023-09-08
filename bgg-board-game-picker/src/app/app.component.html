@@ -25,7 +25,7 @@
         Search
       </button>
     </div>
-    <div *ngIf="get_current_game_collection()?.items" class="game-gallery flex justify-content-around flex-row flex-wrap gap-4">
+    <div *ngIf="get_current_game_collection()?.items" class="game-gallery flex justify-content-around flex-row flex-wrap gap-4 pt-3">
       <mat-card *ngFor="let random_game of random_games" class="surface-card p-4 shadow-2 border-round justify-content-center
       responsive xl:w-auto lg:w-auto md:w-min w-full
       border-round-sm
@@ -52,8 +52,24 @@
         </mat-card-content>
       </mat-card>
     </div>
-    <!-- loop over board_games -->
-    <div *ngIf="get_current_game_collection()?.items">
+    <div *ngIf="get_current_games_for_search()" class="p-1 pt-3">
+      <mat-expansion-panel hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            All Games matching Criteria
+          </mat-panel-title>
+          <mat-panel-description>
+            Expand to view all
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <ul>
+          <li *ngFor="let game of get_current_games_for_search()">
+            {{ game.name }}
+          </li>
+        </ul>
+      </mat-expansion-panel>
+    </div>
+    <div *ngIf="get_current_game_collection()?.items" class="p-1">
       <mat-expansion-panel hideToggle>
         <mat-expansion-panel-header>
           <mat-panel-title>
