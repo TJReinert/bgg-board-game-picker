@@ -10,7 +10,7 @@
 }
 
 .bgg-search-inputs > mat-form-field {
-  max-width: 60vw;
+  max-width: 15rem;
 }
 
 .app-content {
