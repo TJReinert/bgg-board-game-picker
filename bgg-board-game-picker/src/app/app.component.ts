@@ -11,7 +11,7 @@ import {
 import { FormControl, Validators } from '@angular/forms';
 import { BggCollectionItemDto } from 'boardgamegeekclient/dist/esm/dto/concrete/subdto/BggCollectionItemDto';
 import { range, shuffle } from 'lodash';
-import { faHourglass, faPlay, faUserLarge } from '@fortawesome/free-solid-svg-icons';
+import { faChevronDown, faHourglass, faPlay, faUserLarge } from '@fortawesome/free-solid-svg-icons';
 import { unescape } from 'lodash';
 
 @Component({
@@ -36,16 +36,20 @@ export class AppComponent {
   time = faHourglass;
   players = faUserLarge;
   plays = faPlay;
+  expand = faChevronDown;
+  loading = false
 
   constructor(private store: Store) {
     store.select(UserBoardGameCollectionState).subscribe((result) => {
       this.all_board_games = result;
+      this.loading = false;
       this.randomize()
     });
   }
 
   get_games() {
     if (this.current_username) {
+      this.loading = true
       this.store.dispatch(
         new GetUserBoardGameCollection(this.current_username)
       );
@@ -79,6 +83,10 @@ export class AppComponent {
     }
 
     return 'Unknown Error';
+  }
+
+  search_disabled() {
+    return this.loading || this.username_control.invalid
   }
 
   get_game_title(game_name: String) {

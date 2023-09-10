@@ -3,7 +3,7 @@ import { Action, State, StateContext, StateToken } from '@ngxs/store';
 import { BggCollectionDto } from 'boardgamegeekclient/dist/esm/dto/concrete/BggCollectionDto';
 import { BoardGameService } from './board-game.service';
 import { GetUserBoardGameCollection } from './board-game.actions';
-const BOARD_GAME_COLLECTION_TOKEN = new StateToken<BggCollectionDto>('UserBoardGameCollection');
+export const BOARD_GAME_COLLECTION_TOKEN = new StateToken<BggCollectionDto>('UserBoardGameCollection');
 
 export interface BoardGameCollections {
   [key: string]: BggCollectionDto;
