@@ -56,11 +56,8 @@
       </mat-card>
     </div>
     <div *ngIf="get_current_games_for_search()" class="p-1 pt-3">
-      <mat-expansion-panel hideToggle>
+      <mat-expansion-panel>
         <mat-expansion-panel-header>
-          <mat-panel-title>
-            <fa-icon [icon]="expand"></fa-icon>
-          </mat-panel-title>
           <mat-panel-description>
             Expand to view all games matchin criteria
           </mat-panel-description>
@@ -73,11 +70,8 @@
       </mat-expansion-panel>
     </div>
     <div *ngIf="get_current_game_collection()?.items" class="p-1">
-      <mat-expansion-panel hideToggle>
+      <mat-expansion-panel>
         <mat-expansion-panel-header>
-          <mat-panel-title>
-            <fa-icon [icon]="expand"></fa-icon>
-          </mat-panel-title>
           <mat-panel-description>
             Expand to view all games
           </mat-panel-description>

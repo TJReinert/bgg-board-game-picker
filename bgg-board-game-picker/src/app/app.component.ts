@@ -1,18 +1,14 @@
 import { Component } from '@angular/core';
-import { BoardGameService } from './board-game/board-game.service';
-import { Observable } from 'rxjs';
-import { Select, Store } from '@ngxs/store';
-import { BggCollectionDto } from 'boardgamegeekclient/dist/esm/dto/concrete/BggCollectionDto';
+import { FormControl, Validators } from '@angular/forms';
+import { faChevronDown, faHourglass, faPlay, faUserLarge } from '@fortawesome/free-solid-svg-icons';
+import { Store } from '@ngxs/store';
+import { range, shuffle, unescape } from 'lodash';
 import { GetUserBoardGameCollection } from './board-game/board-game.actions';
 import {
   BoardGameCollections,
   UserBoardGameCollectionState,
 } from './board-game/board-game.states';
-import { FormControl, Validators } from '@angular/forms';
-import { BggCollectionItemDto } from 'boardgamegeekclient/dist/esm/dto/concrete/subdto/BggCollectionItemDto';
-import { range, shuffle } from 'lodash';
-import { faChevronDown, faHourglass, faPlay, faUserLarge } from '@fortawesome/free-solid-svg-icons';
-import { unescape } from 'lodash';
+import { BggCollectionItemDto } from './board-game/board-game.models';
 
 @Component({
   selector: 'app-root',

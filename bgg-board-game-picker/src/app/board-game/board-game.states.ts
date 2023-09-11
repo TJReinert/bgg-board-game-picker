@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Action, State, StateContext, StateToken } from '@ngxs/store';
-import { BggCollectionDto } from 'boardgamegeekclient/dist/esm/dto/concrete/BggCollectionDto';
 import { BoardGameService } from './board-game.service';
 import { GetUserBoardGameCollection } from './board-game.actions';
+import { BggCollectionDto } from './board-game.models';
 export const BOARD_GAME_COLLECTION_TOKEN = new StateToken<BggCollectionDto>('UserBoardGameCollection');
 
 export interface BoardGameCollections {
@@ -22,8 +22,11 @@ export class UserBoardGameCollectionState {
     const user_id = action.user_id
     if (!all_user_collections[user_id]) {
       this.boardGameService.get_games(user_id)
-      .then(result => ctx.patchState({ [user_id] : result[0] }),
-            error => console.log(error))
+      .subscribe({
+        next: (result: any) => ctx.patchState({ [user_id] : result }),
+        error: (error: any) => console.log(error),
+        complete: () => {}
+      })
     } else {
       // trigger downstream so things still happen
       ctx.patchState({ [user_id] : all_user_collections[user_id] })
