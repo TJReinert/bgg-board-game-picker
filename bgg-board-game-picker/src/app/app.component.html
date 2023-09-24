@@ -29,8 +29,8 @@
       </button>
     </div>
     <div *ngIf="get_current_game_collection()?.items" class="game-gallery flex justify-content-around flex-row flex-wrap gap-4 pt-3">
-      <mat-card *ngFor="let random_game of random_games" class="surface-card p-4 shadow-2 border-round justify-content-center
-      responsive xl:w-auto lg:w-auto md:w-min w-full
+      <mat-card *ngFor="let random_game of random_games"style="flex-basis: 30%" class="surface-card p-4 shadow-2 border-round justify-content-center
+      flex-grow-1
       border-round-sm
       fadein animation-duration-1000" >
         <mat-card-header class="p-0 flex justify-content-center align-items-center">
@@ -54,6 +54,11 @@
           </div>
         </mat-card-content>
       </mat-card>
+    </div>
+    <div>
+      <button class="w-8rem" type="button" color="primary" mat-raised-button (click)="additional_games(3)" [hidden]="remaining_games().length == 0">
+        <span>Show more</span>
+      </button>
     </div>
     <div *ngIf="get_current_games_for_search()" class="p-1 pt-3">
       <mat-expansion-panel>

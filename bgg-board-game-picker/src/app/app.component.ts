@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { faChevronDown, faHourglass, faPlay, faUserLarge } from '@fortawesome/free-solid-svg-icons';
 import { Store } from '@ngxs/store';
-import { range, shuffle, unescape } from 'lodash';
+import { range, shuffle, unescape, reject, find } from 'lodash';
 import { GetUserBoardGameCollection } from './board-game/board-game.actions';
 import {
   BoardGameCollections,
@@ -121,6 +121,16 @@ export class AppComponent {
       return `${min} players`
     }
     return `${min} - ${max} players`
+  }
+
+  additional_games(num: number) {
+    var additional: BggCollectionItemDto[] = shuffle(this.remaining_games())?.slice(0, num);
+    this.random_games = this.random_games.concat(additional)
+  }
+
+  remaining_games() {
+    return this.get_current_games_for_search(this.number_of_players)
+      ?.filter((i) => !this.random_games.includes(i))
   }
 
   _get_random_games(num: number): BggCollectionItemDto[] {
