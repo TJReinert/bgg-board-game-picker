@@ -26,6 +26,15 @@ export class AppComponent {
   current_username = 'asmithnp12';
   number_of_players_options = range(1, 10)
   number_of_players = 2;
+  estimated_time_default = {value: undefined, viewValue: "Any"};
+  estimated_time_options = [
+    this.estimated_time_default,
+    {value: 60, viewValue: "1 Hour"},
+    {value: 90, viewValue: "1.5 Hours"},
+    {value: 120, viewValue: "2 Hours"},
+    {value: 180, viewValue: "3 Hours"},
+  ];
+  estimated_time = this.estimated_time_default;
   all_board_games: BoardGameCollections;
   random_games: BggCollectionItemDto[];
 
@@ -56,13 +65,19 @@ export class AppComponent {
     return this.all_board_games[this.current_username];
   }
 
-  get_current_games_for_search(number_of_players?: number) {
+  get_current_games_for_search(number_of_players?: number,
+                              estimated_time_minutes?: number) {
     if (!number_of_players) {
       number_of_players = this.number_of_players
     }
-    return this.get_current_game_collection()?.items
-               .filter(game => number_of_players ? game?.stats?.minplayers <= number_of_players : true)
-               .filter(game => number_of_players ? game?.stats?.maxplayers >= number_of_players : true)
+    var filtered = this.get_current_game_collection()?.items
+                       .filter(game => number_of_players ? game?.stats?.minplayers <= number_of_players : true)
+                       .filter(game => number_of_players ? game?.stats?.maxplayers >= number_of_players : true);
+    if (estimated_time_minutes) {
+      filtered = filtered.filter(game => estimated_time_minutes ? game?.stats?.maxplaytime <= estimated_time_minutes : true)
+    }
+
+    return filtered;
   }
 
 
@@ -134,6 +149,6 @@ export class AppComponent {
   }
 
   _get_random_games(num: number): BggCollectionItemDto[] {
-    return shuffle(this.get_current_games_for_search(this.number_of_players)).slice(0, num);
+    return shuffle(this.get_current_games_for_search(this.number_of_players, this.estimated_time.value)).slice(0, num);
   }
 }
