@@ -14,6 +14,7 @@ import { BggCollectionItemDto } from './board-game/board-game.models';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
+  standalone: false,
 })
 export class AppComponent {
   title = 'Board Game Geek Game Picker';
