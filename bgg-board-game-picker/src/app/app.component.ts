@@ -88,8 +88,8 @@ export class AppComponent {
     }
   }
 
-  get_current_game_collection() {
-    return this.all_board_games[this.current_username];
+  get_current_game_collection(): import('./board-game/board-game.models').BggCollectionDto | undefined {
+    return this.all_board_games?.[this.current_username];
   }
 
   get_current_games_for_search(

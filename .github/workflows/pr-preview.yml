@@ -28,7 +28,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: gh-pages
-          folder: ./bgg-board-game-picker/dist/bgg-board-game-picker/browser
+          folder: ./bgg-board-game-picker/dist/bgg-board-game-picker
           target-folder: pr-${{ github.event.number }}
           clean: false
 
