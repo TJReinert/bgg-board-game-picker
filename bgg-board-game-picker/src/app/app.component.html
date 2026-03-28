@@ -75,7 +75,7 @@
       </div>
     }
     <div>
-      <button class="w-8rem" type="button" color="primary" mat-raised-button (click)="additional_games(3)" [hidden]="remaining_games().length == 0">
+      <button class="w-8rem" type="button" color="primary" mat-raised-button (click)="additional_games(3)" [hidden]="!remaining_games()?.length">
         <span>Show more</span>
       </button>
     </div>

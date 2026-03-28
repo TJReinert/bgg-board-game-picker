@@ -62,8 +62,8 @@ export class AppComponent {
     { value: 180, viewValue: '3 Hours' },
   ];
   estimated_time = this.estimated_time_default;
-  all_board_games: BoardGameCollections;
-  random_games: BggCollectionItemDto[];
+  all_board_games: BoardGameCollections = {};
+  random_games: BggCollectionItemDto[] = [];
 
   time = faHourglass;
   players = faUserLarge;
