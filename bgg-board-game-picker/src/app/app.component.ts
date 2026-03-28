@@ -1,39 +1,65 @@
 import { Component } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { faChevronDown, faHourglass, faPlay, faUserLarge } from '@fortawesome/free-solid-svg-icons';
 import { Store } from '@ngxs/store';
-import { range, shuffle, unescape, reject, find } from 'lodash';
+import { range, shuffle, unescape } from 'lodash';
 import { GetUserBoardGameCollection } from './board-game/board-game.actions';
 import {
   BoardGameCollections,
   UserBoardGameCollectionState,
 } from './board-game/board-game.states';
 import { BggCollectionItemDto } from './board-game/board-game.models';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatSelectModule } from '@angular/material/select';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
+import { MatSliderModule } from '@angular/material/slider';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
-  standalone: false,
+  styleUrl: './app.component.css',
+  standalone: true,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatExpansionModule,
+    MatSelectModule,
+    MatIconModule,
+    MatCardModule,
+    MatSliderModule,
+    MatProgressSpinnerModule,
+    FontAwesomeModule,
+  ],
 })
 export class AppComponent {
   title = 'Board Game Geek Game Picker';
-  number_of_random_games = 3
+  number_of_random_games = 3;
 
   username_control = new FormControl('', [
     Validators.required,
     Validators.minLength(1),
   ]);
   current_username = 'asmithnp12';
-  number_of_players_options = range(1, 10)
+  number_of_players_options = range(1, 10);
   number_of_players = 2;
-  estimated_time_default = {value: undefined, viewValue: "Any"};
+  estimated_time_default = { value: undefined, viewValue: 'Any' };
   estimated_time_options = [
     this.estimated_time_default,
-    {value: 60, viewValue: "1 Hour"},
-    {value: 90, viewValue: "1.5 Hours"},
-    {value: 120, viewValue: "2 Hours"},
-    {value: 180, viewValue: "3 Hours"},
+    { value: 60, viewValue: '1 Hour' },
+    { value: 90, viewValue: '1.5 Hours' },
+    { value: 120, viewValue: '2 Hours' },
+    { value: 180, viewValue: '3 Hours' },
   ];
   estimated_time = this.estimated_time_default;
   all_board_games: BoardGameCollections;
@@ -43,19 +69,19 @@ export class AppComponent {
   players = faUserLarge;
   plays = faPlay;
   expand = faChevronDown;
-  loading = false
+  loading = false;
 
   constructor(private store: Store) {
     (store.select(UserBoardGameCollectionState as any) as any).subscribe((result: BoardGameCollections) => {
       this.all_board_games = result;
       this.loading = false;
-      this.randomize()
+      this.randomize();
     });
   }
 
   get_games() {
     if (this.current_username) {
-      this.loading = true
+      this.loading = true;
       this.store.dispatch(
         new GetUserBoardGameCollection(this.current_username)
       );
@@ -66,21 +92,24 @@ export class AppComponent {
     return this.all_board_games[this.current_username];
   }
 
-  get_current_games_for_search(number_of_players?: number,
-                              estimated_time_minutes?: number) {
+  get_current_games_for_search(
+    number_of_players?: number,
+    estimated_time_minutes?: number
+  ) {
     if (!number_of_players) {
-      number_of_players = this.number_of_players
+      number_of_players = this.number_of_players;
     }
-    var filtered = this.get_current_game_collection()?.items
-                       .filter(game => number_of_players ? game?.stats?.minplayers <= number_of_players : true)
-                       .filter(game => number_of_players ? game?.stats?.maxplayers >= number_of_players : true);
+    let filtered = this.get_current_game_collection()?.items
+      .filter(game => (number_of_players ? game?.stats?.minplayers <= number_of_players : true))
+      .filter(game => (number_of_players ? game?.stats?.maxplayers >= number_of_players : true));
     if (estimated_time_minutes) {
-      filtered = filtered.filter(game => estimated_time_minutes ? game?.stats?.maxplaytime <= estimated_time_minutes : true)
+      filtered = filtered?.filter(game =>
+        estimated_time_minutes ? game?.stats?.maxplaytime <= estimated_time_minutes : true
+      );
     }
 
     return filtered;
   }
-
 
   randomize() {
     this.random_games = this._get_random_games(this.number_of_random_games);
@@ -98,58 +127,56 @@ export class AppComponent {
   }
 
   search_disabled() {
-    return this.loading || this.username_control.invalid
+    return this.loading || this.username_control.invalid;
   }
 
-  get_game_title(game_name: String) {
-    return unescape(game_name.replaceAll("&#039;", "&#39;"))
+  get_game_title(game_name: string) {
+    return unescape(game_name.replaceAll("&#039;", "&#39;"));
   }
 
   get_time_text(game: BggCollectionItemDto) {
-    var min = game?.stats?.minplaytime
-    var max = game?.stats?.maxplaytime
+    const min = game?.stats?.minplaytime;
+    const max = game?.stats?.maxplaytime;
     if (!min && !max) {
-      return `Unknown minutes`
+      return `Unknown minutes`;
     }
     if (min == max) {
-      return `${min} minutes`
+      return `${min} minutes`;
     }
-    return `${min}-${max} minutes`
+    return `${min}-${max} minutes`;
   }
 
-  get_playcount_text(plays: Number) {
-    if (plays === 1) {
-      var suffix = 'play'
-    } else {
-      var suffix = 'plays'
-    }
-    return `${plays} ${suffix}`
+  get_playcount_text(plays: number) {
+    const suffix = plays === 1 ? 'play' : 'plays';
+    return `${plays} ${suffix}`;
   }
 
   get_players_text(game: BggCollectionItemDto) {
-    var min = game?.stats?.minplayers
-    var max = game?.stats?.maxplayers
+    const min = game?.stats?.minplayers;
+    const max = game?.stats?.maxplayers;
 
     if (min === max) {
       if (min === 1) {
-        return `1 player`
+        return `1 player`;
       }
-      return `${min} players`
+      return `${min} players`;
     }
-    return `${min} - ${max} players`
+    return `${min} - ${max} players`;
   }
 
   additional_games(num: number) {
-    var additional: BggCollectionItemDto[] = shuffle(this.remaining_games())?.slice(0, num);
-    this.random_games = this.random_games.concat(additional)
+    const additional: BggCollectionItemDto[] = shuffle(this.remaining_games())?.slice(0, num);
+    this.random_games = this.random_games.concat(additional);
   }
 
   remaining_games() {
     return this.get_current_games_for_search(this.number_of_players)
-      ?.filter((i) => !this.random_games.includes(i))
+      ?.filter(i => !this.random_games.includes(i));
   }
 
   _get_random_games(num: number): BggCollectionItemDto[] {
-    return shuffle(this.get_current_games_for_search(this.number_of_players, this.estimated_time.value)).slice(0, num);
+    return shuffle(
+      this.get_current_games_for_search(this.number_of_players, this.estimated_time.value)
+    ).slice(0, num);
   }
 }
