@@ -45,7 +45,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
       UserBoardGameCollectionState
     ]),
     NgxsStoragePluginModule.forRoot({
-      key: [UserBoardGameCollectionState]
+      keys: [UserBoardGameCollectionState]
     }),
     FontAwesomeModule
   ],

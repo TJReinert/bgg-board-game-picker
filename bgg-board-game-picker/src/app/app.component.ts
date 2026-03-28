@@ -45,7 +45,7 @@ export class AppComponent {
   loading = false
 
   constructor(private store: Store) {
-    store.select(UserBoardGameCollectionState).subscribe((result) => {
+    (store.select(UserBoardGameCollectionState as any) as any).subscribe((result: BoardGameCollections) => {
       this.all_board_games = result;
       this.loading = false;
       this.randomize()
