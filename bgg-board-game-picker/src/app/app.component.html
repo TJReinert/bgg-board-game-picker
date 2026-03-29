@@ -11,90 +11,109 @@
         <mat-label>Username</mat-label>
         <input matInput [(ngModel)]="current_username" [formControl]="username_control" required
           (keyup.enter)=get_games()>
-        <mat-error *ngIf="username_control.invalid">{{getErrorMessage()}}</mat-error>
+        @if (username_control.invalid) {
+          <mat-error>{{getErrorMessage()}}</mat-error>
+        }
       </mat-form-field>
       <mat-form-field class="main-input">
         <mat-label>Number of Players</mat-label>
         <mat-select [(value)]="number_of_players" (valueChange)="get_games()">
-          <mat-option *ngFor="let option of number_of_players_options" [value]="option">
-            {{option}}
-          </mat-option>
+          @for (option of number_of_players_options; track option) {
+            <mat-option [value]="option">
+              {{option}}
+            </mat-option>
+          }
         </mat-select>
       </mat-form-field>
       <mat-form-field class="main-input">
         <mat-label>Estimated Time</mat-label>
         <mat-select [(value)]="estimated_time" (valueChange)="get_games()">
-          <mat-option *ngFor="let option of estimated_time_options" [value]="option">
-            {{option.viewValue}}
-          </mat-option>
+          @for (option of estimated_time_options; track $index) {
+            <mat-option [value]="option">
+              {{option.viewValue}}
+            </mat-option>
+          }
         </mat-select>
       </mat-form-field>
       <button class="w-8rem" type="button" color="primary" mat-raised-button (click)="get_games()" [disabled]="search_disabled()">
-        <span *ngIf="!loading; else disabled_search_text">Search</span>
-        <ng-template #disabled_search_text>
+        @if (!loading) {
+          <span>Search</span>
+        } @else {
           <mat-spinner diameter="30" color="primary"></mat-spinner>
-        </ng-template>
+        }
       </button>
     </div>
-    <div *ngIf="get_current_game_collection()?.items" class="game-gallery flex justify-content-around flex-row flex-wrap gap-4 pt-3">
-      <mat-card *ngFor="let random_game of random_games"style="flex-basis: 31%" class="surface-card p-4 shadow-2 border-round justify-content-center
-      flex-grow-1 min-w-min
-      border-round-sm
-      fadein animation-duration-1000" >
-        <mat-card-header class="p-0 flex justify-content-center align-items-center">
-          <mat-card-title>{{get_game_title(random_game.name)}}</mat-card-title>
-        </mat-card-header>
-        <mat-card-content class="p-0 pt-1">
-          <div>
-            <fa-icon [icon]="players"></fa-icon>
-            {{get_players_text(random_game)}}
-          </div>
-          <div>
-            <fa-icon [icon]="time"></fa-icon>
-            {{get_time_text(random_game)}}
-          </div>
-          <div>
-            <fa-icon [icon]="plays"></fa-icon>
-            {{get_playcount_text(random_game.numplays)}}
-          </div>
-          <div class="flex justify-content-center mt-auto pt-2">
-            <img mat-card-image src={{random_game.thumbnail}}>
-          </div>
-        </mat-card-content>
-      </mat-card>
-    </div>
+    @if (get_current_game_collection()?.items) {
+      <div class="game-gallery flex justify-content-around flex-row flex-wrap gap-4 pt-3">
+        @for (random_game of random_games; track random_game.objectid ?? $index) {
+          <mat-card style="flex-basis: 31%" class="surface-card p-4 shadow-2 border-round justify-content-center
+          flex-grow-1 min-w-min
+          border-round-sm
+          fadein animation-duration-1000" >
+            <mat-card-header class="p-0 flex justify-content-center align-items-center">
+              <mat-card-title>{{get_game_title(random_game.name)}}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="p-0 pt-1">
+              <div>
+                <fa-icon [icon]="players"></fa-icon>
+                {{get_players_text(random_game)}}
+              </div>
+              <div>
+                <fa-icon [icon]="time"></fa-icon>
+                {{get_time_text(random_game)}}
+              </div>
+              <div>
+                <fa-icon [icon]="plays"></fa-icon>
+                {{get_playcount_text(random_game.numplays)}}
+              </div>
+              <div class="flex justify-content-center mt-auto pt-2">
+                <img mat-card-image src={{random_game.thumbnail}}>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        }
+      </div>
+    }
     <div>
-      <button class="w-8rem" type="button" color="primary" mat-raised-button (click)="additional_games(3)" [hidden]="remaining_games().length == 0">
+      <button class="w-8rem" type="button" color="primary" mat-raised-button (click)="additional_games(3)" [hidden]="!remaining_games()?.length">
         <span>Show more</span>
       </button>
     </div>
-    <div *ngIf="get_current_games_for_search()" class="p-1 pt-3">
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-description>
-            Expand to view all games matchin criteria
-          </mat-panel-description>
-        </mat-expansion-panel-header>
-        <ul>
-          <li *ngFor="let game of get_current_games_for_search()">
-            {{ game.name }}
-          </li>
-        </ul>
-      </mat-expansion-panel>
-    </div>
-    <div *ngIf="get_current_game_collection()?.items" class="p-1">
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-description>
-            Expand to view all games
-          </mat-panel-description>
-        </mat-expansion-panel-header>
-        <ul>
-          <li *ngFor="let game of get_current_game_collection()?.items">
-            {{ game.name }}
-          </li>
-        </ul>
-      </mat-expansion-panel>
-    </div>
+    @if (get_current_games_for_search()) {
+      <div class="p-1 pt-3">
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-description>
+              Expand to view all games matchin criteria
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <ul>
+            @for (game of get_current_games_for_search(); track game.objectid ?? $index) {
+              <li>
+                {{ game.name }}
+              </li>
+            }
+          </ul>
+        </mat-expansion-panel>
+      </div>
+    }
+    @if (get_current_game_collection()?.items) {
+      <div class="p-1">
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-description>
+              Expand to view all games
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <ul>
+            @for (game of get_current_game_collection()?.items ?? []; track game.objectid ?? $index) {
+              <li>
+                {{ game.name }}
+              </li>
+            }
+          </ul>
+        </mat-expansion-panel>
+      </div>
+    }
   </div>
 </div>
