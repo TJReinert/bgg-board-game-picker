@@ -1,11 +1,11 @@
-export interface BggCollectionDto {
+export declare class BggCollectionDto {
   id: number;
   totalitems: number;
   pubdate: string;
   items: BggCollectionItemDto[];
 }
 
-export interface BggCollectionItemDto {
+export declare class BggCollectionItemDto {
   objectid: number;
   collid: number;
   objecttype: string;
@@ -25,7 +25,7 @@ export interface BggCollectionItemDto {
   stats: BggCollectionItemStatsDto;
 }
 
-export interface BggCollectionItemStatusDto {
+export declare class BggCollectionItemStatusDto {
   own: number;
   prevowned: number;
   fortrade: number;
@@ -38,7 +38,7 @@ export interface BggCollectionItemStatusDto {
   lastmodified: string;
 }
 
-export interface BggCollectionItemStatsDto {
+export declare class BggCollectionItemStatsDto {
   minplayers: number;
   maxplayers: number;
   minplaytime: number;
@@ -47,8 +47,7 @@ export interface BggCollectionItemStatsDto {
   numowned: number;
   rating: BggCollectionItemStatRatingDto;
 }
-
-export interface BggCollectionItemStatRatingDto {
+export declare class BggCollectionItemStatRatingDto {
   value: number;
   usersrated: number;
   average: number;
@@ -57,8 +56,7 @@ export interface BggCollectionItemStatRatingDto {
   median: number;
   ranks: BggCollectionItemStatRatingRanksDto[];
 }
-
-export interface BggCollectionItemStatRatingRanksDto {
+export declare class BggCollectionItemStatRatingRanksDto {
   type: string;
   id: number;
   name: string;
